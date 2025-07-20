@@ -1,4 +1,6 @@
 const { Schema, model } = require("mongoose");
+const User = require("./userModels.js");
+const Chat = require("./chatModel.js");
 
 const messageModel = new Schema(
   {

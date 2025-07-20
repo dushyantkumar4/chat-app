@@ -1,16 +1,23 @@
 import "./App.css";
-import ChatPage from "./ChatPage.jsx";
-import HomePage from "./HomePage.jsx";
+import ChatPage from "./pages/ChatPage.jsx";
+import HomePage from "./pages/HomePage.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import ChatLayout from "./components/ChatLayout.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <HomePage />,
-  },
-  {
-    path: "/chats",
-    element: <ChatPage />,
+    element: <ChatLayout />,
+    children: [
+      {
+        path: "/",
+        element: <HomePage />,
+      },
+      {
+        path: "/chats",
+        element: <ChatPage />,
+      },
+    ],
   },
 ]);
 

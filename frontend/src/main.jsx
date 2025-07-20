@@ -5,7 +5,7 @@ import App from "./App.jsx";
 import ChatProvider from "./components/context/ChatProvider.jsx";
 
 createRoot(document.getElementById("root")).render(
-  <ChatProvider>
+  <div>
     <App />
-  </ChatProvider>
+  </div>
 );

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Stack from "@mui/joy/Stack";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
 import Input from "@mui/joy/Input";
@@ -8,7 +8,6 @@ import IconButton from "@mui/joy/IconButton";
 import { Button, Snackbar, Alert } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import axios from "axios";
-
 
 const Login = () => {
   const navigate = useNavigate();
@@ -20,7 +19,6 @@ const Login = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [errType, setErrType] = useState(false);
 
-  
   const submitHandler = async () => {
     setLoading(true);
     if (!email || !password) {
@@ -32,7 +30,7 @@ const Login = () => {
     try {
       const config = {
         headers: {
-          "Content-Type":"application/json",
+          "Content-Type": "application/json",
         },
       };
       const { data } = await axios.post(
@@ -43,7 +41,7 @@ const Login = () => {
       setErrorMessage("Login successful");
       setErrType(true);
       setOpenSnackbar(true);
-      localStorage.setItem("userInfo",JSON.stringify(data));
+      localStorage.setItem("userInfo", JSON.stringify(data));
       setLoading(false);
       navigate("/chats");
     } catch (err) {
@@ -114,7 +112,7 @@ const Login = () => {
           fontSize: "1.2rem",
           textTransform: "none",
         }}
-        onClick={()=>{
+        onClick={() => {
           setEmail("guest@example.com");
           setPassword(1234);
         }}

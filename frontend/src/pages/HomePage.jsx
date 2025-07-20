@@ -1,4 +1,4 @@
-import React, {useEffect } from "react";
+import React, { useEffect } from "react";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -6,8 +6,8 @@ import Tabs from "@mui/joy/Tabs";
 import TabList from "@mui/joy/TabList";
 import Tab from "@mui/joy/Tab";
 import TabPanel from "@mui/joy/TabPanel";
-import Login from "./components/Authentication/Login.jsx";
-import Signup from "./components/Authentication/Signup.jsx";
+import Login from "../components/Authentication/Login.jsx";
+import Signup from "../components/Authentication/Signup.jsx";
 import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
