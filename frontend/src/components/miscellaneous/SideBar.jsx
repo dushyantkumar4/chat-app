@@ -10,23 +10,31 @@ import {
   Avatar,
   Divider,
   Drawer,
-  TextField,
+  Snackbar,
+  Alert,
+  CircularProgress ,
 } from "@mui/material";
-
+import axios from "axios";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import ProfileModel from "./ProfileModel";
 import { ChatState } from "../context/ChatProvider";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { useNavigate } from "react-router-dom";
+import ChatLoading from "../ChatLoading";
+import UserListItem from "../UserAvtar/UserListItem";
 
 const SideBar = () => {
   const [search, setSearch] = useState("");
-  const [serchResult, setSearchResult] = useState([]);
+  const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [open, setOpen] = useState(false);
-  const { user } = ChatState();
+  const [errorMessage, setErrorMessage] = useState("");
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [errType, setErrType] = useState(false);
+
+  const { user ,setSelectedChat , chats,setChats} = ChatState();
   const navigate = useNavigate();
 
   const useMenuState = () => {
@@ -51,11 +59,52 @@ const SideBar = () => {
   const handleDialogClose = () => {
     setOpenDialog(false);
   };
-  const handleSearch = ()=>{
-    if(!search){}
-  }
+  const handleSearch = async () => {
+    if (!search) {
+      setErrorMessage("Please enter user details");
+      setOpenSnackbar(true);
+      return;
+    }
+    try {
+      setLoading(true);
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      const { data } = await axios.get(`/api/user?search=${search}`, config);
+      setSearchResult(data);
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      setErrorMessage("failed to load search results");
+      setOpenSnackbar(true);
+    }
+  };
+  const accessChat = async(userId) => {
+    try {
+      setLoadingChat(true);
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      const {data} = await axios.post(`/api/chat`,{userId},config);
+      if(!chats.find((c)=>c._id===data._id))setChats([data,...chats]);
+      setSelectedChat(data);
+      setLoadingChat(false);
+
+    } catch (err) {
+      console.log(err.message);
+      setErrorMessage(err.message);
+      setOpenSnackbar(true);
+      return;
+    }
+  };
+
   const DrawerList = (
-    <Box sx={{ width: 300 }} role="presentation" >
+    <Box sx={{ width: 300 }} role="presentation">
       <Typography sx={{ p: 2, fontSize: "20px", fontWeight: 100 }}>
         Search Users
       </Typography>
@@ -73,16 +122,31 @@ const SideBar = () => {
           placeholder="Search by name or email"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          className="serch-user"
         />
+        <Snackbar
+          open={openSnackbar}
+          autoHideDuration={3000}
+          onClose={() => setOpenSnackbar(false)}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        >
+          <Alert
+            onClose={() => setOpenSnackbar(false)}
+            severity={errType ? "success" : "error"}
+            sx={{ width: "100%" }}
+          >
+            {errorMessage}
+          </Alert>
+        </Snackbar>
         <Button
           variant="contained"
           sx={{
-            bgcolor: "#e0ebff",
-            color: "black",
+            bgcolor: "#72c3f4",
+            color: "white",
             fontWeight: "700",
-            py:1
+            py: 1,
           }}
-          onClick={()=>handleSearch}
+          onClick={handleSearch}
         >
           Go
         </Button>
@@ -174,6 +238,18 @@ const SideBar = () => {
       {/* sidebar  */}
       <Drawer open={open} onClose={() => setOpen(false)}>
         {DrawerList}
+        {loading ? (
+          <ChatLoading data={searchResult} />
+        ) : (
+          searchResult?.map((user) => (
+            <UserListItem
+              key={user._id}
+              user={user}
+              handleFunction={() => accessChat(user._id)}
+            />
+          ))
+        )}
+        {loadingChat && <CircularProgress sx={{ml:"auto", display:"flex"}}/>}
       </Drawer>
     </>
   );
