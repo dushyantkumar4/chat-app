@@ -12,7 +12,7 @@ import {
   Drawer,
   Snackbar,
   Alert,
-  CircularProgress ,
+  CircularProgress,
 } from "@mui/material";
 import axios from "axios";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -122,7 +122,7 @@ const SideBar = () => {
           placeholder="Search by name or email"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="serch-user"
+          className="search-user"
         />
         <Snackbar
           open={openSnackbar}

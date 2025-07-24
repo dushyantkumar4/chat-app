@@ -5,6 +5,7 @@ import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
 import ChatLoading from "./ChatLoading";
 import { getSender } from "../config/ChatLogic.js";
+import GroupChatModel from "./miscellaneous/GroupChatModel.jsx";
 
 const MyChat = () => {
   const [loggedUser, setLoggedUser] = useState();
@@ -81,20 +82,22 @@ const MyChat = () => {
         }}
       >
         My Chats
-        <Button
-          sx={{
-            textTransform: "none",
-            color: "white",
-            fontWeight: "700",
-            py: 1,
-            display: "flex",
-            alignItems: "center",
-          }}
-          variant="contained"
-        >
-          New Group chat &nbsp;
-          <AddIcon />
-        </Button>
+        <GroupChatModel>
+          <Button
+            sx={{
+              textTransform: "none",
+              color: "white",
+              fontWeight: "700",
+              py: 1,
+              display: "flex",
+              alignItems: "center",
+            }}
+            variant="contained"
+          >
+            New Group chat &nbsp;
+            <AddIcon />
+          </Button>
+        </GroupChatModel>
       </Box>
       <Box
         sx={{
@@ -128,7 +131,7 @@ const MyChat = () => {
                 <Typography>
                   {!chat.isGroupChat
                     ? getSender(loggedUser, chat.users)
-                    : chat.Name}
+                    : chat.chatName}
                 </Typography>
               </Box>
             ))}
