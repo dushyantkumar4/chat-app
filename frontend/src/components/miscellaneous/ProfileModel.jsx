@@ -13,7 +13,6 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { styled } from "@mui/material/styles";
 
-
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
     padding: theme.spacing(5),
@@ -24,15 +23,11 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 const ProfileModel = ({ open, handleClose, user }) => {
- 
-
   const getInitials = (name = "") => {
     const words = name.trim().split(" ");
     if (words.length === 1) return words[0][0].toUpperCase();
     return (words[0][0] + words[words.length - 1][0]).toUpperCase();
   };
-
-  
 
   return (
     <div>

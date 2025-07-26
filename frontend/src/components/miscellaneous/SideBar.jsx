@@ -94,7 +94,7 @@ const SideBar = () => {
       if(!chats.find((c)=>c._id===data._id))setChats([data,...chats]);
       setSelectedChat(data);
       setLoadingChat(false);
-
+      return ;
     } catch (err) {
       console.log(err.message);
       setErrorMessage(err.message);
